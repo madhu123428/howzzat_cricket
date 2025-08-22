@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Howzatt! Cricket Scorekeeper</title>
+    <link rel="stylesheet" href="base_styles.css">
+    <link rel="stylesheet" href="scorecard.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Full Scorecard</h1>
+        <button class="primary" onclick="window.history.back()">Back to Match</button>
+        
+        <div class="stats-box">
+            <h2>🏏 Batting Scorecard</h2>
+            <div class="scorecard-table" id="battingScorecard">
+                <!-- Generated dynamically -->
+            </div>
+        </div>
+        
+        <div class="stats-box">
+            <h2>🎯 Bowling Scorecard</h2>
+            <div class="scorecard-table" id="bowlingScorecard">
+                <!-- Generated dynamically -->
+            </div>
+        </div>
+    </div>
+    <script>
+        function loadScorecard() {
+            const matchData = JSON.parse(localStorage.getItem('matchData'));
+            
+            // Check if the team was all out
+            const isAllOut = matchData.current.score.wickets === 10;
+            const allOutSummary = isAllOut ? '<div class="all-out-summary">All out</div>' : '';
+            
+            // Batting Scorecard
+            const battingHTML = `
+                <div class="scorecard-header">
+                    <div>Batter</div>
+                    <div>R</div>
+                    <div>B</div>
+                    <div>4s</div>
+                    <div>6s</div>
+                    <div>SR</div>
+                </div>
+                ${getAllBatters(matchData).map(batter => `
+                    <div class="scorecard-row ${batter.out ? 'out' : ''}">
+                        <div>${batter.name} ${batter.striker ? '⚡' : ''}</div>
+                        <div>${batter.runs}</div>
+                        <div>${batter.balls}</div>
+                        <div>${batter.fours}</div>
+                        <div>${batter.sixes}</div>
+                        <div>${calculateStrikeRate(batter)}</div>
+                    </div>
+                `).join('')}
+                ${allOutSummary}
+            `;
+            
+            // Bowling Scorecard
+            const bowlingHTML = `
+                <div class="scorecard-header">
+                    <div>Bowler</div>
+                    <div>O</div>
+                    <div>M</div>
+                    <div>R</div>
+                    <div>W</div>
+                    <div>ER</div>
+                </div>
+                ${matchData.allBowlers.map(bowler => `
+                    <div class="scorecard-row">
+                        <div>${bowler.name}</div>
+                        <div>${bowler.overs}.${bowler.balls}</div>
+                        <div>${bowler.maidens}</div>
+                        <div>${bowler.runs}</div>
+                        <div>${bowler.wickets}</div>
+                        <div>${calculateEconomyRate(bowler)}</div>
+                    </div>
+                `).join('')}
+            `;
+
+            document.getElementById('battingScorecard').innerHTML = battingHTML;
+            document.getElementById('bowlingScorecard').innerHTML = bowlingHTML;
+        }
+
+        function getAllBatters(matchData) {
+            return [
+                ...matchData.allBatters,
+                matchData.current.striker,
+                matchData.current.nonStriker
+            ].filter(b => b.name);
+        }
+
+        function calculateStrikeRate(batter) {
+            return batter.balls > 0 
+                ? ((batter.runs / batter.balls) * 100).toFixed(1)
+                : '-';
+        }
+
+        function calculateEconomyRate(bowler) {
+            const totalBalls = bowler.overs * 6 + bowler.balls;
+            return totalBalls > 0 
+                ? ((bowler.runs / totalBalls) * 6).toFixed(2)
+                : '-';
+        }
+
+        window.onload = loadScorecard;
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Howzatt! Cricket Scorekeeper</title>
+    <link rel="stylesheet" href="base_styles.css">
+    <link rel="stylesheet" href="live.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="matchTitle">🏏 Live Match</h1>
+        
+        <div class="stats-container">
+            <div class="stats-box" id="scoreDisplay"></div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stats-box">
+                <h3>🏏 Batters</h3>
+                <div id="battersDisplay"></div>
+            </div>
+            
+            <div class="stats-box">
+                <h3>🎯 Bowlers</h3>
+                <div id="bowlersDisplay"></div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="primary" onclick="addRuns(0)">0</button>
+            <button class="primary" onclick="addRuns(1)">1</button>
+            <button class="primary" onclick="addRuns(2)">2</button>
+            <button class="primary" onclick="addRuns(3)">3</button>
+            <button class="primary" onclick="addRuns(4)">4</button>
+            <button class="primary" onclick="addRuns(6)">6</button>
+            <button class="danger" onclick="addWicket()">Wicket</button>
+        </div>
+
+        <div class="button-group">
+            <button class="success" onclick="addExtra('wide')">Wide</button>
+            <button class="success" onclick="addExtra('no-ball')">No Ball</button>
+            <button class="success" onclick="addExtra('bye')">Bye</button>
+            <button class="success" onclick="addExtra('leg-bye')">Leg Bye</button>
+        </div>
+
+        <div class="button-group">
+            <button class="primary" onclick="goToScorecard()">Scorecard</button>
+            <button class="danger" onclick="endInnings()">End Innings</button>
+        </div>
+
+        <div class="stats-box">
+            <h3>📜 Live Commentary</h3>
+            <div id="commentary"></div>
+        </div>
+    </div>
+    <script src="score.js"></script>
+</body>
+</html>

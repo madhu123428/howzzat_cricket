@@ -1,0 +1,137 @@
+
+.all-out-summary {
+    text-align: center;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #fadbd8;
+    border-radius: 5px;
+}
+ 
+
+.scorecard-table {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin: 1.5rem 0;
+    background: white;
+    border: 1px solid var(--border);
+}
+
+.scorecard-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 1.2rem;
+    display: grid;
+    grid-template-columns: 2fr repeat(5, 1fr);
+    gap: 1rem;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.scorecard-row {
+    padding: 1.2rem;
+    display: grid;
+    grid-template-columns: 2fr repeat(5, 1fr);
+    gap: 1rem;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.scorecard-row:hover {
+    background: #f8faff;
+    transform: scale(1.01);
+}
+
+.scorecard-row:nth-child(odd) {
+    background: #f8faff;
+}
+
+.scorecard-row:last-child {
+    border-bottom: none;
+}
+
+.scorecard-row.out {
+    background: #fff0f3;
+    color: var(--danger);
+    border-left: 4px solid var(--danger);
+}
+
+.scorecard-row.out:hover {
+    background: #ffe6eb;
+}
+
+.scorecard-row div {
+    text-align: center;
+    padding: 0.7rem;
+    position: relative;
+}
+
+.scorecard-row div:first-child {
+    text-align: left;
+    font-weight: 500;
+    position: relative;
+}
+
+/* Highlight effect for special stats */
+.scorecard-row div[data-highlight="true"] {
+    color: var(--primary);
+    font-weight: 600;
+    position: relative;
+}
+
+.scorecard-row div[data-highlight="true"]::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: var(--primary-light);
+    border-radius: 2px;
+}
+
+/* Striker icon animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.striker-icon {
+    display: inline-block;
+    color: var(--secondary);
+    margin-left: 5px;
+    animation: pulse 1.5s infinite;
+}
+
+/* Badge for high strike rates */
+.high-sr {
+    display: inline-block;
+    background: var(--success);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Badge for wicket takers */
+.wicket-taker {
+    display: inline-block;
+    background: var(--primary-light);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}

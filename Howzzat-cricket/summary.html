@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Howzatt! Cricket Scorekeeper</title>
+    <link rel="stylesheet" href="base_styles.css">
+    <link rel="stylesheet" href="summary.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Match Summary</h1>
+        <div id="resultDisplay"></div>
+        <button class="success" onclick="resetMatch()">Reset Match</button>
+    </div>
+    <script src="score.js"></script>
+    <script>
+        function displayResult() {
+            const matchData = JSON.parse(localStorage.getItem('matchData'));
+        
+            const team1Name = matchData.team1;
+            const team2Name = matchData.team2;
+        
+            const battingTeamKey = matchData.current.battingTeam;
+            const bowlingTeamKey = matchData.current.bowlingTeam;
+        
+            const battingTeamName = battingTeamKey === 'team1' ? team1Name : team2Name;
+            const bowlingTeamName = bowlingTeamKey === 'team1' ? team1Name : team2Name;
+        
+            const runsScored = matchData.current.score.runs;
+            const wicketsLost = matchData.current.score.wickets;
+            const wicketsLeft = 10 - wicketsLost;
+            const target = matchData.current.target;
+        
+            // Calculate balls used/left
+            const totalBalls = matchData.maxOvers * 6;
+            const ballsUsed = (matchData.current.overs * 6) + matchData.current.balls;
+            const ballsLeft = totalBalls - ballsUsed;
+        
+            let resultText = "";
+
+            const inningsOver = (ballsLeft === 0) || (wicketsLost === 10);
+            const allOut = wicketsLost === 10;
+            
+            if (runsScored === target - 1 && inningsOver) {
+                // Match is drawn
+                resultText = `It's a draw! Both teams scored ${runsScored} runs.`;
+            } else if (runsScored >= target) {
+                // Batting team won
+                resultText = `${battingTeamName} wins by ${wicketsLeft} wicket${wicketsLeft !== 1 ? "s" : ""} (${ballsLeft} ball${ballsLeft !== 1 ? "s" : ""} left)!`;
+            } else {
+                // Bowling team won
+                const runsMargin = target - 1 - runsScored;
+                const allOutText = allOut ? " (All out)" : "";
+                resultText = `${bowlingTeamName} wins by ${runsMargin} run${runsMargin !== 1 ? "s" : ""}${allOutText}!`;
+            }
+
+        
+            document.getElementById('resultDisplay').innerHTML = `
+                <div class="stats-box">
+                    <h2>${resultText}</h2>
+                    <p>${team1Name} vs ${team2Name}</p>
+                    <p>Match format: ${matchData.maxOvers} overs per side</p>
+                </div>
+            `;
+        }
+
+        window.onload = displayResult;
+    </script>
+</body>
+</html>
